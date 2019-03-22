@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector2 move = new Vector2(0.0f, 0.0f);
+        Vector2 move = Vector2.zero;
         if(Input.GetKey("w"))  {
             move = new Vector2(move.x, move.y + 1.0f);
         }
@@ -38,12 +38,13 @@ public class Player : MonoBehaviour
         if(move != Vector2.zero) {
             acceleration = Mathf.Clamp01(acceleration + Time.deltaTime);
         } else if (move == Vector2.zero && acceleration > 0) {
-            acceleration = Mathf.Clamp01(acceleration - (Time.deltaTime * 5));
+            acceleration = Mathf.Clamp01(acceleration - (Time.deltaTime * 3));
             move = lastMove;
         }
         
         lastMove = move;
         move = move.normalized * Time.deltaTime * speed * acceleration;
-        rb.MovePosition(new Vector3(rb.position.x + move.x, rb.position.y, rb.position.z + move.y));
+        Vector3 newPosition = new Vector3(transform.position.x + move.x, transform.position.y, transform.position.z + move.y);
+        transform.position = newPosition;
     }
 }
